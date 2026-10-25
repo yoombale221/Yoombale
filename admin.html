@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Yoombale - Ajouter Produits</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
+body{background:#f0fdf4;padding:16px}
+h1{color:#166534;text-align:center;margin:10px 0;font-size:22px}
+.form{background:white;padding:16px;border-radius:16px;box-shadow:0 4px 12px rgba(0,0,0,.08);margin-bottom:16px}
+label{font-size:13px;font-weight:700;display:block;margin-top:10px;color:#334155}
+input,select,textarea{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:10px;margin-top:4px;font-size:14px}
+button{width:100%;padding:12px;border:none;border-radius:12px;font-weight:800;font-size:14px;margin-top:12px;cursor:pointer}
+.btn-add{background:#16a34a;color:white}
+.btn-save{background:#0f172a;color:white}
+.preview{width:100%;height:160px;object-fit:cover;border-radius:12px;margin-top:8px;display:none;background:#f1f5f9}
+.list{display:grid;gap:10px}
+.item{background:white;padding:10px;border-radius:12px;display:flex;gap:10px;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.item img{width:60px;height:60px;object-fit:cover;border-radius:8px}
+.item b{font-size:13px} .item small{font-size:11px;color:#64748b}
+.actions{margin-left:auto;display:flex;gap:6px}
+.actions button{width:auto;padding:6px 10px;font-size:11px;margin:0}
+.del{background:#fee2e2;color:#dc2626}
+.help{background:#fffbeb;border:1px solid #fcd34d;padding:12px;border-radius:12px;font-size:12px;line-height:1.4;margin-bottom:12px}
+</style>
+</head>
+<body>
+<h1>🌾 Admin Yoombale</h1>
+<div class="help">
+<b>Comment ça marche :</b><br>
+1. Remplis formulaire → Ajouter Produit<br>
+2. Liste en bas se met à jour<br>
+3. Clique <b>Sauvegarder + Télécharger</b><br>
+4. Fichier index.html se télécharge<br>
+5. Va sur GitHub → Upload ce fichier → Commit
+</div>
+<div class="form">
+<label>Photo (prends avec téléphone)</label>
+<input type="file" id="photo" accept="image/*">
+<img id="preview" class="preview">
+<label>Nom *</label>
+<input type="text" id="nom" placeholder="Ex: Oeufs de caille - 24 pcs">
+<label>Prix *</label>
+<input type="text" id="prix" placeholder="Ex: 3500 FCFA">
+<label>Catégorie</label>
+<select id="cat">
+<option>Volaille</option><option>Oeufs</option><option>Poisson</option><option>Fruits Secs</option><option>Bétail</option><option>Céréales</option><option>Autre</option>
+</select>
+<label>Description</label>
+<textarea id="desc" rows="2" placeholder="Ex: Frais du jour, ferme Malika"></textarea>
+<button class="btn-add" onclick="ajouter()">+ Ajouter ce produit</button>
+<button class="btn-save" onclick="exporter()">💾 Sauvegarder + Télécharger le site</button>
+<p id="msg" style="text-align:center;font-size:12px;margin-top:8px;color:#16a34a"></p>
+</div>
+<h3 style="margin:10px 0;font-size:16px">📦 Tes produits (<span id="count">0</span>)</h3>
+<div class="list" id="list"></div>
+<script>
+let produits = JSON.parse(localStorage.getItem('yoombale_produits') || 'null');
+if(!produits){
+produits = [
+{nom:"Poulets de Chair",prix:"3500 FCFA / kg",image:"https://images.unsplash.com/photo-1587593810167-a84920ea0781?w=500",cat:"Volaille",desc:"Poulets bien nourris, 1.5-2kg"},
+{nom:"Oeufs Frais - Plateau 30",prix:"4000 FCFA",image:"https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=500",cat:"Oeufs",desc:"Oeufs frais du jour"},
+{nom:"Poisson Frais - Dorade",prix:"4000 FCFA / kg",image:"https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=500",cat:"Poisson",desc:"Poisson frais du jour"},
+{nom:"Oeufs de Caille - Plateau 24",prix:"3500 FCFA",image:"https://images.unsplash.com/photo-1587486913049-07fc1976cbb6?w=500",cat:"Oeufs",desc:"Oeufs de caille frais et bio"},
+{nom:"Fruits Secs - Mix Premium 1kg",prix:"8000 FCFA",image:"https://images.unsplash.com/photo-1508061253366-f7da158b6d46?w=500",cat:"Fruits Secs",desc:"Anacarde, amandes, raisins secs"},
+{nom:"Vache Laitière",prix:"Sur devis",image:"https://images.unsplash.com/photo-1527153857715-3908f2bae5e8?w=500",cat:"Bétail",desc:"Vaches en bonne santé"}
+];
+}
+let imageData = "";
+document.getElementById('photo').addEventListener('change', function(e){
+const file = e.target.files[0];if(!file) return;
+const reader = new FileReader();
+reader.onload = function(ev){imageData = ev.target.result;document.getElementById('preview').src = imageData;document.getElementById('preview').style.display='block';};
+reader.readAsDataURL(file);
+});
+function sauver(){localStorage.setItem('yoombale_produits', JSON.stringify(produits)); afficher();}
+function ajouter(){
+const nom=document.getElementById('nom').value.trim();
+const prix=document.getElementById('prix').value.trim();
+const cat=document.getElementById('cat').value;
+const desc=document.getElementById('desc').value.trim();
+if(!nom||!prix){alert('Mets Nom et Prix');return;}
+const img = imageData || "https://images.unsplash.com/photo-1559620192-032c4bc4674e?w=500";
+produits.push({nom,prix,image:img,cat,desc});sauver();
+document.getElementById('nom').value='';document.getElementById('prix').value='';document.getElementById('desc').value='';imageData='';document.getElementById('preview').style.display='none';
+document.getElementById('msg').innerText='✅ Produit ajouté !';setTimeout(()=>document.getElementById('msg').innerText='',2000);
+}
+function supprimer(i){if(confirm('Supprimer?')){produits.splice(i,1);sauver();}}
+function afficher(){
+const l=document.getElementById('list');l.innerHTML='';
+produits.forEach((p,i)=>{l.innerHTML+=`<div class="item"><img src="${p.image}"><div><b>${p.nom}</b><br><small>${p.prix} - ${p.cat}</small></div><div class="actions"><button class="del" onclick="supprimer(${i})">X</button></div></div>`;});
+document.getElementById('count').innerText=produits.length;
+}
+function exporter(){
+sauver();
+const produitsStr = JSON.stringify(produits, null, 2);
+const html = `<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Yoombale - Ferme Malika</title><style>*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}body{background:#f8faf7} .header{background:#166534;color:white;padding:18px 16px;position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center}.header h1{font-size:20px;font-weight:800}.header a{background:#22c55e;color:white;padding:8px 14px;border-radius:999px;text-decoration:none;font-size:13px;font-weight:700}.hero{padding:24px 16px;background:linear-gradient(135deg,#dcfce7,#bbf7d0)}.hero h2{font-size:26px;color:#14532d}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px}.card{background:white;border-radius:16px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.06);border:1px solid #e2e8f0}.card img{width:100%;height:140px;object-fit:cover}.card-body{padding:10px}.cat{font-size:10px;background:#dcfce7;color:#166534;padding:3px 8px;border-radius:999px;font-weight:700;display:inline-block}.card h3{font-size:14px;margin:6px 0 2px}.price{color:#16a34a;font-weight:800;font-size:13px}.desc{font-size:11px;color:#64748b;margin-top:4px}.card a{display:block;margin-top:8px;background:#22c55e;color:white;text-align:center;padding:8px;border-radius:10px;text-decoration:none;font-size:12px;font-weight:700}.footer{background:#0f172a;color:white;padding:20px 16px;margin-top:16px;text-align:center}</style></head><body><div class="header"><div><h1>🌾 Yoombale</h1><p>Ferme Malika - Guédiawaye</p></div><a href="https://wa.me/221784417720">WhatsApp</a></div><div class="hero"><h2>Produits frais de la ferme à votre table</h2><p>Poulets, œufs, poisson, fruits secs - Livraison Dakar</p></div><div class="grid" id="grid"></div><div class="footer"><h4>Yoombale - Ferme Malika</h4><p>📍 Malika, Guédiawaye<br>📞 78 441 77 20 / 76 565 83 08</p></div><script>const produits = ${produitsStr};const grid=document.getElementById('grid');produits.forEach(p=>{const msg=encodeURIComponent(\`Salam Yoombale! Je veux commander: \${p.nom} - \${p.prix}\`);grid.innerHTML+=\`<div class="card"><img src="\${p.image}"><div class="card-body"><span class="cat">\${p.cat}</span><h3>\${p.nom}</h3><div class="price">\${p.prix}</div><div class="desc">\${p.desc||''}</div><a href="https://wa.me/221784417720?text=\${msg}">Commander</a></div></div>\`;});<\/script></body></html>`;
+const blob = new Blob([html], {type:'text/html'});const url = URL.createObjectURL(blob);const a = document.createElement('a');a.href=url;a.download='index.html';a.click();
+document.getElementById('msg').innerText='📥 Fichier téléchargé ! Upload-le sur GitHub.';
+}
+afficher();
+</script>
+</body>
+</html>
