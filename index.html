@@ -3,81 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Yoombalé - Marché Agricole Sénégal</title>
+<title>Yoombale - Ferme Malika</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,sans-serif;background:#f6f6f3;color:#1a1a1a}
-header{background:#0a7a3e;color:white;padding:15px;text-align:center;position:sticky;top:0;z-index:10}
-.products{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px}
-.card{background:white;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.card img{width:100%;height:130px;object-fit:cover}
-.card-body{padding:10px}
-.price{color:#0a7a3e;font-weight:bold;font-size:16px}
-.btn{width:100%;background:#0a7a3e;color:white;border:none;padding:10px;border-radius:8px;margin-top:8px;font-weight:bold}
-.badge{font-size:11px;background:#e8f5e9;color:#0a7a3e;padding:3px 8px;border-radius:20px}
-.whatsapp{position:fixed;bottom:20px;right:20px;background:#25D366;color:white;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;text-decoration:none}
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif;}
+body{background:#f8faf7;color:#1a1a1a;}
+.header{background:#166534;color:white;padding:18px 16px;position:sticky;top:0;z-index:10;display:flex;justify-content:space-between;align-items:center;}
+.header h1{font-size:20px;font-weight:800;}
+.header a{background:#22c55e;color:white;padding:8px 14px;border-radius:999px;text-decoration:none;font-size:13px;font-weight:700;}
+.hero{padding:24px 16px;background:linear-gradient(135deg,#dcfce7,#bbf7d0);}
+.hero h2{font-size:26px;color:#14532d;}
+.hero h2 span{color:#16a34a;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px;}
+.card{background:white;border-radius:16px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,.06);border:1px solid #e2e8f0;}
+.card img{width:100%;height:140px;object-fit:cover;}
+.card-body{padding:10px;}
+.cat{font-size:10px;background:#dcfce7;color:#166534;padding:3px 8px;border-radius:999px;font-weight:700;display:inline-block;}
+.card h3{font-size:14px;margin:6px 0 2px;}
+.price{color:#16a34a;font-weight:800;font-size:13px;}
+.desc{font-size:11px;color:#64748b;margin-top:4px;}
+.card a{display:block;margin-top:8px;background:#22c55e;color:white;text-align:center;padding:8px;border-radius:10px;text-decoration:none;font-size:12px;font-weight:700;}
+.footer{background:#0f172a;color:white;padding:20px 16px;margin-top:16px;text-align:center;}
 </style>
 </head>
 <body>
-<header>
-<h1>🌾 YOOMBALÉ</h1>
-<p>Marché Général du Sénégal- Malika- Guédiawaye</p>
-</header>
-
-<div style="padding:20px;text-align:center;background:white;margin:10px;border-radius:12px">
-<h2 style="color:#0a7a3e">Produits Frais de la Ferme</h2>
-<p style="font-size:13px;margin-top:6px">Livraison Dakar & Guédiawaye - Paiement à la livraison</p>
+<div class="header">
+  <div><h1>🌾 Yoombale</h1><p>Ferme Malika - Guédiawaye</p></div>
+  <a href="https://wa.me/221784417720">WhatsApp</a>
 </div>
-
-<div class="products" id="products"></div>
-
-<a class="whatsapp" href="https://wa.me/221784417720" target="_blank">W</a>
-
+<div class="hero">
+  <h2>Produits frais de la <span>ferme à votre table</span></h2>
+  <p>Poulets, œufs, poisson, fruits secs - Livraison rapide Dakar & Guédiawaye.</p>
+</div>
+<div class="grid" id="grid"></div>
+<div class="footer">
+  <h4>Yoombale - Ferme Malika</h4>
+  <p>📍 Malika, Guédiawaye, Dakar<br>📞 78 441 77 20 / 76 565 83 08<br>🕒 Ouvert 7j/7</p>
+  <p style="margin-top:12px"><a href="https://wa.me/221784417720" style="background:#22c55e;color:white;padding:10px 20px;border-radius:999px;text-decoration:none;font-weight:700;display:inline-block;">Commander sur WhatsApp</a></p>
+</div>
 <script>
 const produits = [
-  {
-    nom: "Poulets de Chair",
-    prix: "4500 FCFA / kg",
-    image: "https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=400",
-    cat: "Volaille",
-    desc: "Poulets bien nourris, élevés localement. 1.5kg - 2kg"
-  },
-  {
-    nom: "Vache / Boeuf sur pied",
-    prix: "750 000 FCFA",
-    image: "https://images.unsplash.com/photo-1527153857715-3908f2bae5e8?w=400",
-    cat: "Bétail",
-    desc: "Vache Bovines / boeuf - Tabaski & élevage"
-  },
-  {
-    nom: "Oeufs Frais - Plateau 30",
-    prix: "3000 FCFA",
-    image: "https://images.unsplash.com/photo-1484251931219-f44c11dbf4e9?w=400",
-    cat: "Oeufs",
-    desc: "Plateau de 30 oeufs frais du jour"
-  }
+  {nom: "Poulets de Chair",prix: "3500 FCFA / kg",image: "https://images.unsplash.com/photo-1587593810167-a84920ea0781?w=500",cat: "Volaille",desc: "Poulets bien nourris, 1.5-2kg, élevage local"},
+  {nom: "Oeufs Frais - Plateau 30",prix: "4000 FCFA",image: "https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=500",cat: "Oeufs",desc: "Oeufs frais du jour"},
+  {nom: "Poisson Frais - Dorade",prix: "4000 FCFA / kg",image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=500",cat: "Poisson",desc: "Poisson frais du jour, pêche locale Dakar"},
+  {nom: "Oeufs de Caille - Plateau 24",prix: "3500 FCFA",image: "https://images.unsplash.com/photo-1587486913049-07fc1976cbb6?w=500",cat: "Oeufs",desc: "Oeufs de caille frais et bio, très nutritifs"},
+  {nom: "Fruits Secs - Mix Premium 1kg",prix: "8000 FCFA",image: "https://images.unsplash.com/photo-1508061253366-f7da158b6d46?w=500",cat: "Fruits Secs",desc: "Anacarde, amandes, raisins secs, arachides"},
+  {nom: "Vache Laitière",prix: "Sur devis",image: "https://images.unsplash.com/photo-1527153857715-3908f2bae5e8?w=500",cat: "Bétail",desc: "Vaches en bonne santé"}
 ];
-
-const container = document.getElementById('products');
+const grid = document.getElementById('grid');
 produits.forEach(p => {
-  container.innerHTML += `
-    <div class="card">
-      <img src="${p.image}" alt="${p.nom}">
-      <div class="card-body">
-        <span class="badge">${p.cat}</span>
-        <h3>${p.nom}</h3>
-        <p style="font-size:11px;color:#666;margin:4px 0">${p.desc}</p>
-        <div class="price">${p.prix}</div>
-        <button class="btn" onclick="commander('${p.nom}')">Commander sur WhatsApp</button>
-      </div>
-    </div>
-  `;
+  const msg = encodeURIComponent(`Salam Yoombale! Je veux commander: ${p.nom} - ${p.prix}`);
+  grid.innerHTML += `<div class="card"><img src="${p.image}"><div class="card-body"><span class="cat">${p.cat}</span><h3>${p.nom}</h3><div class="price">${p.prix}</div><div class="desc">${p.desc}</div><a href="https://wa.me/221784417720?text=${msg}">Commander</a></div></div>`;
 });
-
-function commander(nom){
-  const msg = `Salam Yoombalé! Je veux commander: ${nom}. Je suis à Guédiawaye.`;
-  window.open(`https://wa.me/221700000000?text=${encodeURIComponent(msg)}`, '_blank');
-}
 </script>
 </body>
 </html>
